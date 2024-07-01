@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ucapan Ulang Tahun</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+  }
+  .container {
+    margin-top: 50px;
+  }
+  .instruction {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: orange;
+  }
+  .input-container {
+    display: none;
+    margin-top: 20px;
+  }
+  #birthdayMessage {
+    display: none;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  .message-container {
+    display: none;
+    margin-top: 20px;
+    text-align: left;
+  }
+  .small-text {
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  .options-container {
+    display: none;
+    margin-top: 20px;
+  }
+  .option-button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+    outline: none;
+  }
+  .blue {
+    background-color: #3498db;
+  }
+  .red {
+    background-color: #e74c3c;
+  }
+  .bubble {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div id="clickNext" class="instruction" onclick="showInput()">Klik Selanjutnya!</div>
+  
+  <div class="input-container" id="inputContainer">
+    <div>Ketik Nama Kamu;)</div>
+    <input type="text" id="nameInput">
+    <button onclick="showBirthdayMessage()">OK</button>
+  </div>
+  
+  <div id="birthdayMessage">Happy Birthday, <span id="displayedName"></span>! 🎉🎂</div>
+  
+  <div class="message-container" id="messageContainer">
+    <div id="typedMessage"></div>
+    <div id="clickToContinue" class="small-text" onclick="showOptions()">Klik untuk lanjut</div>
+  </div>
+  
+  <div class="options-container" id="optionsContainer">
+    <div>Klik 4 BINTANG di bawah!</div>
+    <div>
+      <span class="option-button" onclick="clickStar(1)">★</span>
+      <span class="option-button" onclick="clickStar(2)">★</span>
+      <span class="option-button" onclick="clickStar(3)">★</span>
+      <span class="option-button" onclick="clickStar(4)">★</span>
+    </div>
+  </div>
+  
+  <div class="small-text" id="additionalMessage"></div>
+  
+  <div id="continueLink" class="small-text" onclick="showGiftQuestion()">Lanjut</div>
+</div>
+
+<div id="giftQuestion" class="bubble">
+  <div id="giftQuestionText"></div>
+  <div>
+    <button class="option-button blue" onclick="showResponse('Mauu')">Mauu</button>
+    <button class="option-button red" onclick="showResponse('Engga')">Engga</button>
+  </div>
+</div>
+
+<script>
+function showInput() {
+  document.getElementById('clickNext').style.display = 'none';
+  document.getElementById('inputContainer').style.display = 'block';
+}
+
+function showBirthdayMessage() {
+  var name = document.getElementById('nameInput').value;
+  if (name.trim() !== '') {
+    document.getElementById('inputContainer').style.display = 'none';
+    document.getElementById('birthdayMessage').style.display = 'block';
+    document.getElementById('displayedName').textContent = name;
+    // Trigger party popper animation (replace with your own animation method)
+    triggerPartyPopper();
+    setTimeout(function() {
+      document.getElementById('birthdayMessage').style.display = 'none';
+      document.getElementById('messageContainer').style.display = 'block';
+      typeMessage("Aku ada pesan buat kamu nih;)", "clickToContinue");
+    }, 2000); // Adjust delay as needed
+  }
+}
+
+function typeMessage(message, clickElementId) {
+  var element = document.getElementById('typedMessage');
+  var text = message.split("");
+  var interval = setInterval(function() {
+    if (!text.length) {
+      clearInterval(interval);
+      document.getElementById(clickElementId).style.display = 'block';
+      return;
+    }
+    var char = text.shift();
+    element.innerHTML += char;
+  }, 100); // Typing speed, adjust as needed
+}
+
+function showOptions() {
+  document.getElementById('messageContainer').style.display = 'none';
+  document.getElementById('optionsContainer').style.display = 'block';
+}
+
+function clickStar(number) {
+  var starElement = document.getElementsByClassName('option-button')[number - 1];
+  starElement.style.display = 'none';
+  if (number === 4) {
+    document.getElementById('optionsContainer').style.display = 'none';
+    document.getElementById('additionalMessage').innerHTML = "Tunggu...<br>Baca baik-baik yaa<br>Selamat bertambah usia " + document.getElementById('nameInput').value + "<br>Ciee makin tuaa aja neng&gt;&lt;<br>Sejauh ini gimana rasanya jadi orang dewasa neng? Nano-nano kah? Wkwkwk<br>Semoga panjang umur, sehat selalu, dan jadi pribadi yang lebih baik lagi.";
+    document.getElementById('continueLink').style.display = 'block';
+  }
+}
+
+function showGiftQuestion() {
+  document.getElementById('birthdayMessage').style.display = 'block';
+  document.getElementById('birthdayMessage').innerHTML = "Happy Birthday, " + document.getElementById('nameInput').value + "! 🎉🎂";
+  document.getElementById('additionalMessage').innerHTML = "Selamat bertambah usia " + document.getElementById('nameInput').value + "<br>Doa tebaik buat kamu pokoknya";
+  document.getElementById('continueLink').style.display = 'none';
+  document.getElementById('giftQuestion').style.display = 'block';
+  document.getElementById('giftQuestionText').textContent = document.getElementById('nameInput').value + ", mau kado ga nih?";
+}
+
+function showResponse(response) {
+  var message;
+  if (response === 'Mauu') {
+    message = "Udaah gede ngga usah kado-kadoan ya;) wkwkwk";
+  } else {
+    message = "Yaudah kalo ngga mau ma 😜";
+  }
+  document.getElementById('giftQuestion').style.display = 'none';
+  document.getElementById('birthdayMessage').style.display = 'block';
+  document.getElementById('additionalMessage').innerHTML = message;
+  setTimeout(function() {
+    document.getElementById('additionalMessage').innerHTML = "Selamat bertambah usia " + document.getElementById('nameInput').value + "<br>Doa tebaik buat kamu pokoknya";
+    document.getElementById('birthdayMessage').innerHTML = "Happy Level Up Day;)";
+  }, 3000); // Adjust duration as needed
+}
+
+function triggerPartyPopper() {
+  // Placeholder function for party popper animation
+  console.log("Triggering party popper animation...");
+  // Replace this with your own animation logic if needed
+}
+
+</script>
+</body>
+</html>
